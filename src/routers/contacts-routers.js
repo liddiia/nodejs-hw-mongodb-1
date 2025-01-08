@@ -1,4 +1,10 @@
 import { Router } from 'express';
+import {
+  contactsAddSchema,
+  contactsUpdateSchema,
+} from '../validation/contacts.js';
+import { validationBody } from '../middelwares/validationBody.js';
+import {isValidId} from '../middelwares/isValidId.js';
 
 import * as contactsController from '../controllers/contacts-controllers.js';
 
@@ -10,16 +16,34 @@ contactsRouter.get('/', ctrlWrapper(contactsController.getContactsController));
 
 // zapit odnogo kontaktu:
 
-contactsRouter.get('/:id', ctrlWrapper(contactsController.getContactsByIdController));
+contactsRouter.get(
+  '/:id', isValidId,
+  ctrlWrapper(contactsController.getContactsByIdController),
+);
 
-contactsRouter.post("/", ctrlWrapper(contactsController.addContactsController));
+contactsRouter.post(
+  '/',
+  validationBody(contactsAddSchema),
+  ctrlWrapper(contactsController.addContactsController),
+);
 
 // upsert=update+insert
 
-contactsRouter.put('/:id', ctrlWrapper(contactsController.upsertContactController));
+contactsRouter.put(
+  '/:id', isValidId,
+  validationBody(contactsAddSchema),
+  ctrlWrapper(contactsController.upsertContactController),
+);
 
-contactsRouter.patch("/:id", ctrlWrapper(contactsController.patchContactController));
+contactsRouter.patch(
+  '/:id', isValidId,
+  validationBody(contactsUpdateSchema),
+  ctrlWrapper(contactsController.patchContactController),
+);
 
-contactsRouter.delete("/:id", ctrlWrapper(contactsController.deleteContactController));
+contactsRouter.delete(
+  '/:id', isValidId,
+  ctrlWrapper(contactsController.deleteContactController),
+);
 
 export default contactsRouter;
