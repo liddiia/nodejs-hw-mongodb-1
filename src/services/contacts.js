@@ -20,11 +20,13 @@ export const getContacts = async ({
   if (filter.isFavourite) {
     contactsQuery.where('isFavourite').equals(filter.isFavourite);
   }
+  const totalItems = await ContactCollection.find()
+    .merge(contactsQuery)
+    .countDocuments();
   const items = await contactsQuery
     .skip(skip)
     .limit(limit)
     .sort({ [sortBy]: sortOrder });
-  const totalItems = await ContactCollection.find().merge(contactsQuery).countDocuments();
 
   const paginationData = calcPaginationData({ totalItems, page, perPage });
 
