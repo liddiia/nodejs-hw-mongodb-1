@@ -20,21 +20,26 @@ const contactSchema = new Schema(
     },
     contactType: {
       type: String,
-      enum:contactTypeList,
+      enum: contactTypeList,
       default: 'personal',
       required: true,
     },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
   },
+
   {
     versionKey: false,
     timestamps: true,
   },
 );
 
-
-contactSchema.post("save", handleSaveError);
-contactSchema.pre("findOneAndUpdate", setUpdateSettings);
-contactSchema.post("findOneAndUpdate", handleSaveError);
+contactSchema.post('save', handleSaveError);
+contactSchema.pre('findOneAndUpdate', setUpdateSettings);
+contactSchema.post('findOneAndUpdate', handleSaveError);
 
 export const sortByList = ['_id', 'name', 'isFavourite', 'contactType'];
 

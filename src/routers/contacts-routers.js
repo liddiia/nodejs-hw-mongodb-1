@@ -1,15 +1,21 @@
 import { Router } from 'express';
+import { isValidId } from '../middelwares/isValidId.js';
+import { authenticate } from '../middelwares/authenticate.js';
+import * as contactsController from '../controllers/contacts-controllers.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { validationBody } from '../middelwares/validationBody.js';
+
 import {
   contactsAddSchema,
   contactsUpdateSchema,
 } from '../validation/contacts.js';
-import { validationBody } from '../middelwares/validationBody.js';
-import {isValidId} from '../middelwares/isValidId.js';
 
-import * as contactsController from '../controllers/contacts-controllers.js';
-
-import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 const contactsRouter = Router();
+
+// перевіряється для всіх контактів
+
+contactsRouter.use(authenticate);
+
 // usi kontakti otrimuemo:
 
 contactsRouter.get('/', ctrlWrapper(contactsController.getContactsController));
@@ -17,7 +23,8 @@ contactsRouter.get('/', ctrlWrapper(contactsController.getContactsController));
 // zapit odnogo kontaktu:
 
 contactsRouter.get(
-  '/:id', isValidId,
+  '/:id',
+  isValidId,
   ctrlWrapper(contactsController.getContactsByIdController),
 );
 
@@ -30,19 +37,22 @@ contactsRouter.post(
 // upsert=update+insert
 
 contactsRouter.put(
-  '/:id', isValidId,
+  '/:id',
+  isValidId,
   validationBody(contactsAddSchema),
   ctrlWrapper(contactsController.upsertContactController),
 );
 
 contactsRouter.patch(
-  '/:id', isValidId,
+  '/:id',
+  isValidId,
   validationBody(contactsUpdateSchema),
   ctrlWrapper(contactsController.patchContactController),
 );
 
 contactsRouter.delete(
-  '/:id', isValidId,
+  '/:id',
+  isValidId,
   ctrlWrapper(contactsController.deleteContactController),
 );
 
