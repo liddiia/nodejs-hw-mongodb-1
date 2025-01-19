@@ -1,20 +1,22 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-// import { logger } from "./middelwares/logger.js";
+//import { logger } from "./middelwares/logger.js";
 import { notFoundHandler } from './middelwares/notFoundHandler.js';
 
-import { getEnvVar } from './utils/getEnvVar.js';
 import contactsRouter from './routers/contacts-routers.js';
 import { errorHandler } from './middelwares/errorHandler.js';
 import authRouter from './routers/auth.js';
+
+import { getEnvVar } from './utils/getEnvVar.js';
+
 export const setupServer = () => {
   const app = express();
 
   app.use(cors());
   app.use(express.json()); //відповідає за обробку запиту в форматі json
   // app.use(logger);
-  app.use(cookieParser);
+  app.use(cookieParser());
 
   app.use('/contacts', contactsRouter);
   app.use('/auth', authRouter);

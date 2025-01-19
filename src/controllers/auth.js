@@ -11,11 +11,13 @@ const setupSession = (res, session) => {
   });
 };
 export const registerController = async (req, res) => {
-  await authServices.register(req.body);
+  const user = await authServices.register(req.body);
+  const {password, ...userData } = user.toObject();
 
   res.status(201).json({
     status: 201,
     message: 'Successfully registered a user!',
+    data: userData
   });
 };
 

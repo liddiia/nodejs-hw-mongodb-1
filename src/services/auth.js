@@ -5,10 +5,7 @@ import { randomBytes } from 'crypto';
 import User from '../db/models/user.js';
 import Session from '../db/models/session.js';
 
-import {
-  accessTokenLifeTime,
-  refreshTokenLifeTime,
-} from '../constants/users.js';
+import {accessTokenLifeTime,refreshTokenLifeTime} from '../constants/users.js';
 
 // Generate tokens
 const createSessionData = () => ({
@@ -18,20 +15,20 @@ const createSessionData = () => ({
   refreshTokenValidUntil: Date.now() + refreshTokenLifeTime,
 });
 
-export const register = async (payload) => {
+export const register = async payload => {
   const { email, password } = payload;
 
   // Check if user already exists
   const user = await User.findOne({ email });
   if (user) {
-    throw createHttpError(409, 'User already exists');
+    throw createHttpError(409, 'Email in use');
   }
 
   // Hash password
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashPassword = await bcrypt.hash(password, 10);
 
   // Create new user
-  const newUser = await User.create({ ...payload, password: hashedPassword });
+  const newUser = await User.create({ ...payload, password: hashPassword });
   return newUser;
 };
 
@@ -43,13 +40,13 @@ export const login = async ({ email, password }) => {
   }
 
   // Verify password
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (!passwordMatch) {
+  const passwordCompare = await bcrypt.compare(password, user.password);
+  if (!passwordCompare) {
     throw createHttpError(401, 'Email or password invalid');
   }
 
   // Remove old sessions
-  await Session.deleteMany({ userId: user._id });
+  await Session.deleteOne({ userId: user._id });
 
   // Generate tokens
   const sessionData = createSessionData();
@@ -73,7 +70,7 @@ export const refreshToken = async (payload) => {
     throw createHttpError(401, 'Refresh token expired');
   }
 
-  await Session.deleteOne({ id: payload.sessionId });
+  await Session.deleteOne({_id: payload.sessionId });
   // Generate new tokens & Create new session /// userId:
   const sessionData = createSessionData();
 
