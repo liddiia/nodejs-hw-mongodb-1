@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as authCController from '../controllers/auth.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validationBody } from '../middelwares/validationBody.js';
-import { authLoginSchema, authRegisterSchema } from '../validation/auth.js';
+import { authLoginSchema, authRegisterSchema, requestResetEmailSchema } from '../validation/auth.js';
 // import { authenticate } from '../middelwares/authenticate.js';
 
 const authRouter = Router();
@@ -23,6 +23,13 @@ authRouter.post(
 
   authRouter.post(
     '/logout', ctrlWrapper(authCController.logoutController));
+
+   authRouter.post(
+      '/request-reset-email',
+      validationBody(requestResetEmailSchema),
+      ctrlWrapper(authCController.requestResetEmailController),
+    );
+
 
 
 export default authRouter;
