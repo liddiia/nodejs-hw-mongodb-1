@@ -49,10 +49,10 @@ export const addContact = (payload) => ContactCollection.create(payload);
 
 export const updateContact = async (filter, payload, options = {}) => {
   const { upsert = false } = options;
-  const result = await ContactCollection.findOneAndUpdate({filter }, payload, {
-    new: true,
+  const result = await ContactCollection.findOneAndUpdate(filter, payload, {
+    // new: true,
     upsert,
-    runValidators: true,
+    // runValidators: true,
     includeResultMetadata: true,
   });
   if (!result || !result.value) return null;
