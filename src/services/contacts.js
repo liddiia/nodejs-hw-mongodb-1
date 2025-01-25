@@ -20,9 +20,9 @@ export const getContacts = async ({
   if (filter.isFavourite) {
     contactsQuery.where('isFavourite').equals(filter.isFavourite);
   }
-  if (filter.userId){
+  if (filter.userId) {
     contactsQuery.where('userId').equals(filter.userId);
-  };
+  }
   const totalItems = await ContactCollection.find()
     .merge(contactsQuery)
     .countDocuments();
@@ -31,7 +31,7 @@ export const getContacts = async ({
     .limit(limit)
     .sort({ [sortBy]: sortOrder });
 
-  const paginationData = calcPaginationData({ page, perPage,totalItems});
+  const paginationData = calcPaginationData({ page, perPage, totalItems });
 
   return {
     data,
@@ -43,21 +43,23 @@ export const getContacts = async ({
 };
 // export const getContactsById = (id) => ContactCollection.findById(id);
 
-export const getContact = filter => ContactCollection.findOne(filter);
+export const getContact = (filter) => ContactCollection.findOne(filter);
 
 export const addContact = (payload) => ContactCollection.create(payload);
 
 export const updateContact = async (filter, payload, options = {}) => {
   const { upsert = false } = options;
-  const result = await ContactCollection.findOneAndUpdate({filter }, payload, {
+
+  const result = await ContactCollection.findOneAndUpdate(filter, payload, {
     new: true,
     upsert,
     runValidators: true,
     includeResultMetadata: true,
   });
+
   if (!result || !result.value) return null;
 
-  const isNew = Boolean(result.lastErrorObject.upserted);
+  const isNew = Boolean(result.lastErrorObject?.upserted);
 
   return {
     isNew,

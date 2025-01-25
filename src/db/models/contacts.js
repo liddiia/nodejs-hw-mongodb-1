@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { contactTypeList } from '../../constants/contacts.js';
 import { handleSaveError, setUpdateSettings } from './hooks.js';
+
 const contactSchema = new Schema(
   {
     name: {
@@ -12,6 +13,9 @@ const contactSchema = new Schema(
       required: true,
     },
     email: {
+      type: String,
+    },
+    photo:{
       type: String,
     },
     isFavourite: {

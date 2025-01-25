@@ -8,6 +8,7 @@ import { sortByList } from '../db/models/contacts.js';
 
 import { parseContactFilterParams } from '../utils/parseContactFilterParams.js';
 
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
@@ -45,8 +46,12 @@ export const getContactsByIdController = async (req, res) => {
   });
 };
 export const addContactsController = async (req, res) => {
+  let photo;
+  if (req.file) {
+    photo = await saveFileToCloudinary(req.file);
+  }
   const { _id: userId } = req.user;
-  const data = await contactServices.addContact({ ...req.body, userId });
+  const data = await contactServices.addContact({ ...req.body, photo, userId });
 
   res.status(201).json({
     status: 201,
@@ -58,6 +63,7 @@ export const addContactsController = async (req, res) => {
 export const upsertContactController = async (req, res) => {
   const { id } = req.params;
   const { _id: userId } = req.user;
+
   const { isNew, data } = await contactServices.updateContact(
     id,
     { ...req.body, userId },
@@ -68,7 +74,7 @@ export const upsertContactController = async (req, res) => {
   const status = isNew ? 201 : 200;
   res.status(status).json({
     status,
-    message: 'Successfully update contact',
+    message: 'Successfully upsert contact',
     data,
   });
 };
@@ -76,7 +82,19 @@ export const upsertContactController = async (req, res) => {
 export const patchContactController = async (req, res) => {
   const { id: _id } = req.params;
   const { _id: userId } = req.user;
-  const result = await contactServices.updateContact({ _id, userId }, req.body);
+  let photo;
+  if (req.file) {
+    photo = await saveFileToCloudinary(req.file);
+  }
+  const result = await contactServices.updateContact(
+    { _id, userId },
+    {
+      ...req.body,
+      _id,
+      userId,
+      photo,
+    },
+  );
 
   if (!result) {
     throw createError(404, `Contact with id=${_id} not found`);
@@ -84,7 +102,7 @@ export const patchContactController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: 'Successfully upsert movie',
+    message: 'Successfully update contact',
     data: result.data,
   });
 };

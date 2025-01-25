@@ -12,7 +12,7 @@ export const authenticate = async (req, res, next) => {
   if (bearer !== 'Bearer') {
     return next(createHttpError(401, 'Header must be Bearer type'));
   }
-//yt ghj[jlbnm!! lfks]
+
   const session = await getSession({accessToken});
   if (!session) {
     return next(createHttpError(401, 'Session not found'));

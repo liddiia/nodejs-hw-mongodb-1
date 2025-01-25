@@ -15,6 +15,8 @@ export const setupServer = () => {
 
   app.use(cors());
   app.use(express.json()); //відповідає за обробку запиту в форматі json
+
+  app.use(express.static("uploads")); //дозволяє віддавати файли з папки uploads
   // app.use(logger);
   app.use(cookieParser());
 

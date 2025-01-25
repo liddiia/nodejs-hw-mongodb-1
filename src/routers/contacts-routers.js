@@ -4,7 +4,7 @@ import { authenticate } from '../middelwares/authenticate.js';
 import * as contactsController from '../controllers/contacts-controllers.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validationBody } from '../middelwares/validationBody.js';
-
+import { upload } from '../middelwares/multer.js';
 import {
   contactsAddSchema,
   contactsUpdateSchema,
@@ -12,35 +12,24 @@ import {
 
 const contactsRouter = Router();
 
-// перевіряється для всіх контактів
-
 contactsRouter.use(authenticate);
 
-// usi kontakti otrimuemo:
-
 contactsRouter.get('/', ctrlWrapper(contactsController.getContactsController));
-
-// zapit odnogo kontaktu:
 
 contactsRouter.get(
   '/:id',
   isValidId,
   ctrlWrapper(contactsController.getContactsByIdController),
 );
-
+// upload.single("photo") одне фото в полі "photo"
+// upload.array("photo",8) до 8 файлів в полі "photo"
+// upload.filds ([{name:"photo",maxCount:1},{name:"subphoto",maxCount:4}])
+// upload до validationBody!
 contactsRouter.post(
   '/',
+  upload.single('photo'),
   validationBody(contactsAddSchema),
   ctrlWrapper(contactsController.addContactsController),
-);
-
-// upsert=update+insert
-
-contactsRouter.put(
-  '/:id',
-  isValidId,
-  validationBody(contactsAddSchema),
-  ctrlWrapper(contactsController.upsertContactController),
 );
 
 contactsRouter.patch(

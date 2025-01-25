@@ -10,6 +10,7 @@ import { Schema, model } from 'mongoose';
 import { handleSaveError, setUpdateSettings } from './hooks.js';
 import { emailRegexp } from '../../constants/users.js';
 
+
 const usersSchema = new Schema(
   {
     name: {
@@ -26,7 +27,7 @@ const usersSchema = new Schema(
       type: String,
       required: true,
     },
-  },
+   },
   {
     versionKey: false,
     timestamps: true,
