@@ -3,7 +3,9 @@ import createError from "http-errors";
 export const validationBody = schema => {
     const func = async (req, res, next) => {
       try {
-    await schema.validateAsync(req.body, { abortEarly: false });
+        const dataToValidate = req.file
+        ? { ...req.body, photo: req.file }: req.body;
+    await schema.validateAsync(dataToValidate, { abortEarly: false });
     next();
   }
   catch (error) {
