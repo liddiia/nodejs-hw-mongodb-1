@@ -26,7 +26,7 @@ properties:
     description: "Link to contact's photo"
     type: string
     example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
-  isFavorite:
+  isFavourite:
     description: 'Marks contact as favorite'
     type: boolean
     example: false
@@ -35,7 +35,7 @@ properties:
     type: string
     example: 65e4decdd286b30065d54af9
   contactType:
-    description: "Type of contact"
+    description: 'Type of contact'
     type: string
     enum: ['home', 'personal', 'work']
     example: 'personal'

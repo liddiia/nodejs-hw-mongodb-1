@@ -9,7 +9,36 @@ requestBody:
   content:
     multipart/form-data:
       schema:
-        $ref: ../../components/schemas/contact-base.yaml
+        required:
+          - name
+          - phoneNumber
+          - contactType
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phone number"
+            type: string
+            example: '+3807648599987'
+          email:
+            description: "Contact's email"
+            type: string
+            example: example@mail.com
+          photo:
+            description: "Contact's photo"
+            type: string
+            format: binary
+          isFavourite:
+            description: "Marks contact as favorite"
+            type: boolean
+            example: false
+          contactType:
+            description: "Type of contact"
+            type: string
+            enum: ['home', 'personal', 'work']
+            example: 'personal'
 responses:
   '201':
     description: Created a contact
@@ -31,5 +60,9 @@ responses:
             data:
               type: object
               $ref: ../../components/schemas/contact.yaml
+  '400':
+    $ref: '../../components/responses/400.yaml'
   '401':
     $ref: '../../components/responses/401.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

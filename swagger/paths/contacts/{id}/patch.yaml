@@ -8,7 +8,6 @@ security:
 parameters:
   - in: path
     name: id
-    required: true
     description: The id of the contact to update.
     schema:
       type: string
@@ -19,7 +18,33 @@ requestBody:
   content:
     multipart/form-data:
       schema:
-        $ref: ../../../components/schemas/contact-base.yaml
+        type: object
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phone number"
+            type: string
+            example: '+3807648599987'
+          email:
+            description: "Contact's email"
+            type: string
+            example: example@mail.com
+          photo:
+            description: "Contact's photo"
+            type: string
+            format: binary
+          isFavourite:
+            description: "Marks contact as favorite"
+            type: boolean
+            example: false
+          contactType:
+            description: "Type of contact"
+            type: string
+            enum: ['home', 'personal', 'work']
+            example: 'personal'
 responses:
   "200":
     description: Contact updated successfully.
@@ -43,3 +68,5 @@ responses:
     $ref: ../../../components/responses/404.yaml
   "401":
     $ref: ../../../components/responses/401.yaml
+  "500":
+    $ref: ../../../components/responses/500.yaml
