@@ -10,6 +10,7 @@ import authRouter from './routers/auth.js';
 
 import { getEnvVar } from './utils/getEnvVar.js';
 
+import { swaggerDocs } from './middelwares/swaggerDocs.js'; 
 export const setupServer = () => {
   const app = express();
 
@@ -19,7 +20,7 @@ export const setupServer = () => {
   app.use(express.static("uploads")); //дозволяє віддавати файли з папки uploads
   // app.use(logger);
   app.use(cookieParser());
-
+  app.use('/api-docs', swaggerDocs());
   app.use('/contacts', contactsRouter);
   app.use('/auth', authRouter);
 

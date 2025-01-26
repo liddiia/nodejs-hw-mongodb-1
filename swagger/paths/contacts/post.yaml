@@ -1,20 +1,35 @@
 tags:
   - Contacts
-summary: Create a new contact
-operationId: createContact
-description: Add a new contact to the database.
+summary: Create contact
+operationId: addContact
+description: Create a contact with payload
 security:
   - bearerAuth: []
 requestBody:
-  required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
-        $ref: "../../components/schemas/ContactCreate.yaml"
+        $ref: ../../components/schemas/contact-base.yaml
 responses:
-  201:
-    description: Contact created successfully
+  '201':
+    description: Created a contact
     content:
       application/json:
         schema:
-          $ref: "../../components/schemas/Contact.yaml"
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a contact!
+            data:
+              type: object
+              $ref: ../../components/schemas/contact.yaml
+  '401':
+    $ref: '../../components/responses/401.yaml'

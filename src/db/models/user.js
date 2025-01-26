@@ -1,10 +1,4 @@
-// Створіть модель User з такими полями:
 
-//     name - string, required
-//     email - string, email, unique, required
-//     password - string, required
-//     createdAt - дата створення
-//     updatedAt - дата оновлення
 import { Schema, model } from 'mongoose';
 
 import { handleSaveError, setUpdateSettings } from './hooks.js';

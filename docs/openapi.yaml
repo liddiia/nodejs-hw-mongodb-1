@@ -5,24 +5,29 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description:
-    This is a documentation of My Contacts app
+  description: Documentation of My Contacts app.
 tags:
-  # теги, що ви будете використовувати
+  - name: Contacts
+    description: Orientation aabout contacts
+
 servers:
   - url: http://localhost:3000
   - url: https://nodejs-hw-mongodb-1-5-vfk7.onrender.com
 paths:
-   /contacts/{contactId}:
+  /contacts:
     get:
-      $ref: "/swagger/paths/contacts/{id}/get.yaml"
-      /home/nook/repositorii/nodejs-hw-mongodb-1/swagger/paths/contacts/get.yaml
-      # тут будуть посилання на ендпоінти
+      $ref: ../swagger/paths/contacts/get.yaml
+    post:
+      $ref: ../swagger/paths/contacts/post.yaml
+  /contacts/{id}:
+    get:
+      $ref: ../swagger/paths/contacts/{id}/get.yaml
+    patch:
+      $ref: ../swagger/paths/contacts/{id}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/contacts/{id}/delete.yaml
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-#------------------------------------
-      paths:
-

@@ -1,0 +1,19 @@
+type: object
+required:
+  - name
+  - email
+  - password
+properties:
+  name:
+    description: "User's name"
+    type: string
+    example: 'John Doe'
+  email:
+    description: "Contact's email"
+    type: string
+    example: example@mail.com
+password:
+    description: "User's password for authentication must be at least 6 characters long"
+    type: string
+    example: "S3cur3P@ss"
+
