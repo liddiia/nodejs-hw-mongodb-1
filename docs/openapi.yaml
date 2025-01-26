@@ -11,9 +11,13 @@ tags:
   # теги, що ви будете використовувати
 servers:
   - url: http://localhost:3000
-  - url: #посилання на задеплоєний сайт
+  - url: https://nodejs-hw-mongodb-1-5-vfk7.onrender.com
 paths:
-  # тут будуть посилання на ендпоінти
+   /contacts/{contactId}:
+    get:
+      $ref: "/swagger/paths/contacts/{id}/get.yaml"
+      /home/nook/repositorii/nodejs-hw-mongodb-1/swagger/paths/contacts/get.yaml
+      # тут будуть посилання на ендпоінти
 components:
   securitySchemes:
     bearerAuth:
@@ -21,6 +25,4 @@ components:
       scheme: bearer
 #------------------------------------
       paths:
-  /contacts/{contactId}:
-    get:
-      $ref: "./swagger/paths/contacts/{id}/get.yaml"
+
